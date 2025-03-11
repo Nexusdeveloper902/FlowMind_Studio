@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { open } from '@tauri-apps/api/dialog';
 
-type ProjectFormProps = {
+interface ProjectFormProps {
     onBack: () => void;
-    onCreate: (data: { projectName: string; filePath: string; selectedOption: string; }) => void;
-};
+    onCreate: (data: {
+        projectName: string;
+        filePath: string;
+        selectedOption: string;
+    }) => void;
+}
 
 function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
     const [projectName, setProjectName] = useState('');
@@ -22,7 +26,6 @@ function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
             }
         } catch (error) {
             console.error('Error al seleccionar la ubicación:', error);
-            alert('Error al seleccionar la ubicación.');
         }
     };
 

@@ -1,6 +1,11 @@
 import React from 'react';
 
-const Home = ({ onNewProject, onLoadProject }) => {
+interface HomeProps {
+    onNewProject: () => void;
+    onLoadProject: () => void;
+}
+
+const Home: React.FC<HomeProps> = ({ onNewProject, onLoadProject }) => {
     return (
         <div style={{ padding: '2rem', textAlign: 'center' }}>
             <h1>FlowMind Studio</h1>

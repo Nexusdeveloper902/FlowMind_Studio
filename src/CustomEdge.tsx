@@ -1,22 +1,27 @@
-// CustomEdge.jsx
 import React, { useState } from 'react';
-import { getBezierPath } from 'reactflow';
+import { EdgeProps, getBezierPath } from 'reactflow';
+import { EdgeData } from './types';
 
-const CustomEdge = ({
-                        id,
-                        sourceX,
-                        sourceY,
-                        targetX,
-                        targetY,
-                        sourcePosition,
-                        targetPosition,
-                        style = {},
-                        markerEnd,
-                        data,
-                    }) => {
+const CustomEdge: React.FC<EdgeProps<EdgeData>> = ({
+                                                       id,
+                                                       sourceX,
+                                                       sourceY,
+                                                       targetX,
+                                                       targetY,
+                                                       sourcePosition,
+                                                       targetPosition,
+                                                       style = {},
+                                                       markerEnd,
+                                                       data,
+                                                   }) => {
     const [hovered, setHovered] = useState(false);
     const [edgePath, labelX, labelY] = getBezierPath({
-        sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition,
+        sourceX,
+        sourceY,
+        targetX,
+        targetY,
+        sourcePosition,
+        targetPosition,
     });
 
     const branchLabel = data?.branch || '';

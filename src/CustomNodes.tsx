@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Handle } from 'reactflow';
+import { Handle, NodeProps, Position } from 'reactflow';
+import { NodeData } from './types';
 
 // Componente para edición inline del label
 export const EditableLabel = ({
@@ -45,7 +46,8 @@ export const EditableLabel = ({
 };
 
 // Nodo para procesos (rectangular)
-export const ProcessNode = ({ data }: { data: { label: string; onChangeLabel: (newLabel: string) => void } }) => {
+export const ProcessNode = (props: NodeProps<NodeData>) => {
+    const { data } = props;
     return (
         <div style={{
             padding: '10px',
@@ -55,15 +57,20 @@ export const ProcessNode = ({ data }: { data: { label: string; onChangeLabel: (n
             minWidth: '80px',
             textAlign: 'center'
         }}>
-            <Handle type="target" position="top" style={{ background: '#555' }} />
-            <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
-            <Handle type="source" position="bottom" style={{ background: '#555' }} />
+            <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
+            {data.label && data.onChangeLabel ? (
+                <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+            ) : (
+                <div>{data.label || 'Proceso'}</div>
+            )}
+            <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
         </div>
     );
 };
 
 // Nodo para condicionales (diamante)
-export const ConditionalNode = ({ data }: { data: { label: string; onChangeLabel: (newLabel: string) => void } }) => {
+export const ConditionalNode = (props: NodeProps<NodeData>) => {
+    const { data } = props;
     return (
         <div style={{
             width: '100px',
@@ -76,18 +83,37 @@ export const ConditionalNode = ({ data }: { data: { label: string; onChangeLabel
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-            <Handle type="target" position="top" style={{ background: '#555', transform: 'rotate(-45deg)', left: '50%' }} />
+            <Handle
+                type="target"
+                position={Position.Top}
+                style={{ background: '#555', transform: 'rotate(-45deg)', left: '50%' }}
+            />
             <div style={{ transform: 'rotate(-45deg)', textAlign: 'center' }}>
-                <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+                {data.label && data.onChangeLabel ? (
+                    <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+                ) : (
+                    <div>{data.label || 'Condicional'}</div>
+                )}
             </div>
-            <Handle id="true" type="source" position="left" style={{ background: 'green', transform: 'rotate(-45deg)', top: '50%' }} />
-            <Handle id="false" type="source" position="right" style={{ background: 'red', transform: 'rotate(-45deg)', top: '50%' }} />
+            <Handle
+                id="true"
+                type="source"
+                position={Position.Left}
+                style={{ background: 'green', transform: 'rotate(-45deg)', top: '50%' }}
+            />
+            <Handle
+                id="false"
+                type="source"
+                position={Position.Right}
+                style={{ background: 'red', transform: 'rotate(-45deg)', top: '50%' }}
+            />
         </div>
     );
 };
 
 // Nodo para ciclo: inicio del ciclo
-export const CycleStartNode = ({ data }: { data: { label: string; onChangeLabel: (newLabel: string) => void } }) => {
+export const CycleStartNode = (props: NodeProps<NodeData>) => {
+    const { data } = props;
     return (
         <div style={{
             width: '80px',
@@ -101,15 +127,20 @@ export const CycleStartNode = ({ data }: { data: { label: string; onChangeLabel:
             justifyContent: 'center',
             textAlign: 'center'
         }}>
-            <Handle type="target" position="top" style={{ background: '#555' }} />
-            <EditableLabel label={data.label || "Inicio Ciclo"} onChangeLabel={data.onChangeLabel} />
-            <Handle type="source" position="bottom" style={{ background: '#555' }} />
+            <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
+            {data.label && data.onChangeLabel ? (
+                <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+            ) : (
+                <div>Inicio Ciclo</div>
+            )}
+            <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
         </div>
     );
 };
 
 // Nodo para ciclo: fin del ciclo
-export const CycleEndNode = ({ data }: { data: { label: string; onChangeLabel: (newLabel: string) => void } }) => {
+export const CycleEndNode = (props: NodeProps<NodeData>) => {
+    const { data } = props;
     return (
         <div style={{
             width: '80px',
@@ -123,15 +154,20 @@ export const CycleEndNode = ({ data }: { data: { label: string; onChangeLabel: (
             justifyContent: 'center',
             textAlign: 'center'
         }}>
-            <Handle type="target" position="top" style={{ background: '#555' }} />
-            <EditableLabel label={data.label || "Fin Ciclo"} onChangeLabel={data.onChangeLabel} />
-            <Handle type="source" position="bottom" style={{ background: '#555' }} />
+            <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
+            {data.label && data.onChangeLabel ? (
+                <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+            ) : (
+                <div>Fin Ciclo</div>
+            )}
+            <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
         </div>
     );
 };
 
 // Nodo para entrada/salida (paralelogramo)
-export const IONode = ({ data }: { data: { label: string; onChangeLabel: (newLabel: string) => void } }) => {
+export const IONode = (props: NodeProps<NodeData>) => {
+    const { data } = props;
     return (
         <div style={{
             width: '120px',
@@ -144,17 +180,22 @@ export const IONode = ({ data }: { data: { label: string; onChangeLabel: (newLab
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-            <Handle type="target" position="left" style={{ background: '#555', transform: 'skew(20deg)' }} />
+            <Handle type="target" position={Position.Left} style={{ background: '#555', transform: 'skew(20deg)' }} />
             <div style={{ transform: 'skew(20deg)' }}>
-                <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+                {data.label && data.onChangeLabel ? (
+                    <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+                ) : (
+                    <div>{data.label || 'I/O'}</div>
+                )}
             </div>
-            <Handle type="source" position="right" style={{ background: '#555', transform: 'skew(20deg)' }} />
+            <Handle type="source" position={Position.Right} style={{ background: '#555', transform: 'skew(20deg)' }} />
         </div>
     );
 };
 
 // Nodo para funciones (rectángulo con bordes redondeados)
-export const FunctionNode = ({ data }: { data: { label: string; onChangeLabel: (newLabel: string) => void } }) => {
+export const FunctionNode = (props: NodeProps<NodeData>) => {
+    const { data } = props;
     return (
         <div style={{
             padding: '10px',
@@ -165,26 +206,22 @@ export const FunctionNode = ({ data }: { data: { label: string; onChangeLabel: (
             minWidth: '80px',
             textAlign: 'center'
         }}>
-            <Handle type="target" position="top" style={{ background: '#555' }} />
-            <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
-            <Handle type="source" position="bottom" style={{ background: '#555' }} />
+            <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
+            {data.label && data.onChangeLabel ? (
+                <EditableLabel label={data.label} onChangeLabel={data.onChangeLabel} />
+            ) : (
+                <div>{data.label || 'Función'}</div>
+            )}
+            <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
         </div>
     );
 };
 
 // Nodo para variables
-export const VariableNode = ({ data }: {
-    data: {
-        name: string;
-        value: string;
-        variableType: string;
-        onChangeName: (newName: string) => void;
-        onChangeValue: (newValue: string) => void;
-        onChangeType: (newType: string) => void;
-    }
-}) => {
+export const VariableNode = (props: NodeProps<NodeData>) => {
+    const { data } = props;
     const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        data.onChangeType(e.target.value);
+        data.onChangeType && data.onChangeType(e.target.value);
     };
 
     return (
@@ -197,14 +234,22 @@ export const VariableNode = ({ data }: {
             minWidth: '120px',
             textAlign: 'center'
         }}>
-            <Handle type="target" position="top" style={{ background: '#555' }} />
+            <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
             <div>
                 <strong>Var:</strong>
-                <EditableLabel label={data.name} onChangeLabel={data.onChangeName} />
+                {data.name && data.onChangeName ? (
+                    <EditableLabel label={data.name} onChangeLabel={data.onChangeName} />
+                ) : (
+                    <div>var1</div>
+                )}
             </div>
             <div style={{ marginTop: '0.5rem' }}>
                 <label style={{ fontSize: '0.8rem' }}>Tipo:</label>
-                <select value={data.variableType} onChange={handleTypeChange} style={{ fontSize: '0.8rem' }}>
+                <select
+                    value={data.variableType || 'number'}
+                    onChange={handleTypeChange}
+                    style={{ fontSize: '0.8rem' }}
+                >
                     <option value="number">Number</option>
                     <option value="string">String</option>
                     <option value="boolean">Boolean</option>
@@ -212,9 +257,13 @@ export const VariableNode = ({ data }: {
             </div>
             <div style={{ marginTop: '0.5rem' }}>
                 <strong>Val:</strong>
-                <EditableLabel label={data.value} onChangeLabel={data.onChangeValue} />
+                {data.value && data.onChangeValue ? (
+                    <EditableLabel label={data.value} onChangeLabel={data.onChangeValue} />
+                ) : (
+                    <div>0</div>
+                )}
             </div>
-            <Handle type="source" position="bottom" style={{ background: '#555' }} />
+            <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
         </div>
     );
 };

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/App.tsx
+import { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import { open } from '@tauri-apps/api/dialog';
 import { listen } from '@tauri-apps/api/event';
@@ -6,17 +7,24 @@ import Home from './Home';
 import ProjectForm from './ProjectForm';
 import DiagramEditor from './DiagramEditor';
 
+interface ProjectData {
+    projectName?: string;
+    filePath?: string;
+    selectedOption?: string | null;
+    isNew?: boolean;
+}
+
 function App() {
-    const [projectData, setProjectData] = useState<any>(null);
+    const [projectData, setProjectData] = useState<ProjectData | null>(null);
     const [creationResult, setCreationResult] = useState<string | null>(null);
     const [view, setView] = useState<'home' | 'form' | 'editor'>('home');
 
-    // Inicia un proyecto nuevo (lleva al formulario)
+    // Inicia un proyecto nuevo
     const handleNewProject = () => {
         setView('form');
     };
 
-    // Cargar proyecto existente mediante diálogo
+    // Cargar un proyecto existente
     const handleLoadProject = async () => {
         try {
             const selectedPath = await open({
@@ -31,12 +39,11 @@ function App() {
         }
     };
 
-    // Carga automática (para file association o botón de cargar)
+    // Carga automática de proyectos
     const handleAutoLoad = async (filePath: string) => {
         try {
             const jsonStr = await invoke<string>('load_project', { path: filePath });
             const loadedProject = JSON.parse(jsonStr);
-            // Cuando se carga un proyecto existente, marcamos isNew como false
             setProjectData({ ...loadedProject, isNew: false });
             setCreationResult(filePath);
             setView('editor');
@@ -45,14 +52,13 @@ function App() {
         }
     };
 
-    // Retroceder a la pantalla principal
     const handleBack = () => {
         setProjectData(null);
         setCreationResult(null);
         setView('home');
     };
 
-    // Al crear un proyecto nuevo, se invoca create_project y se marca isNew true
+    // Crear un nuevo proyecto
     const handleCreateProject = async ({
                                            projectName,
                                            filePath,
@@ -67,17 +73,11 @@ function App() {
                 alert('Por favor, selecciona un tipo de diagrama');
                 return;
             }
-            console.log('Creating project with:', {
-                name: projectName,
-                path: filePath,
-                diagramType: selectedOption, // clave en snake_case
-            });
             const resultPath = await invoke<string>('create_project', {
                 name: projectName,
                 path: filePath,
-                diagramType: selectedOption,
+                diagram_type: selectedOption,
             });
-            // Marcamos que es un proyecto nuevo
             setProjectData({ projectName, filePath, selectedOption, isNew: true });
             setCreationResult(resultPath);
             setView('editor');
@@ -87,7 +87,6 @@ function App() {
         }
     };
 
-    // Escucha del evento para abrir archivos (file association)
     useEffect(() => {
         const unlistenPromise = listen('tauri://open-file', (event) => {
             const filePath = event.payload as string;
