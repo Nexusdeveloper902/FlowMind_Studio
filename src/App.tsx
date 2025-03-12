@@ -10,8 +10,15 @@ import DiagramEditor from './DiagramEditor';
 interface ProjectData {
     projectName?: string;
     filePath?: string;
-    selectedOption?: string | null;
+    selectedOption?: 'programming' | 'creative' | 'other';
     isNew?: boolean;
+    // Estos campos vendrán si es un diagrama completo
+    mode?: 'programming' | 'creative';
+    nodes?: any[];
+    edges?: any[];
+    diagram_type?: 'programming' | 'creative' | 'other';
+    name?: string;
+    path?: string;
 }
 
 function App() {
@@ -19,12 +26,10 @@ function App() {
     const [creationResult, setCreationResult] = useState<string | null>(null);
     const [view, setView] = useState<'home' | 'form' | 'editor'>('home');
 
-    // Inicia un proyecto nuevo
     const handleNewProject = () => {
         setView('form');
     };
 
-    // Cargar un proyecto existente
     const handleLoadProject = async () => {
         try {
             const selectedPath = await open({
@@ -39,11 +44,25 @@ function App() {
         }
     };
 
-    // Carga automática de proyectos
     const handleAutoLoad = async (filePath: string) => {
         try {
             const jsonStr = await invoke<string>('load_project', { path: filePath });
-            const loadedProject = JSON.parse(jsonStr);
+            const loadedProject = JSON.parse(jsonStr) as ProjectData;
+
+            // Si el archivo tiene nodos y edges, asumimos que es un diagrama completo.
+            if (loadedProject.nodes && loadedProject.edges) {
+                // Si no existe "mode", inferimos a partir de "diagram_type" si está presente
+                if (!loadedProject.mode) {
+                    loadedProject.mode = loadedProject.diagram_type as 'programming' | 'creative' || 'programming';
+                }
+                loadedProject.selectedOption = loadedProject.mode;
+            } else {
+                // Caso de solo metadatos: usamos diagram_type para el modo
+                if (!loadedProject.selectedOption && loadedProject.diagram_type) {
+                    loadedProject.selectedOption = loadedProject.diagram_type;
+                }
+            }
+
             setProjectData({ ...loadedProject, isNew: false });
             setCreationResult(filePath);
             setView('editor');
@@ -58,7 +77,6 @@ function App() {
         setView('home');
     };
 
-    // Crear un nuevo proyecto
     const handleCreateProject = async ({
                                            projectName,
                                            filePath,
@@ -66,19 +84,16 @@ function App() {
                                        }: {
         projectName: string;
         filePath: string;
-        selectedOption: string | null;
+        selectedOption: 'programming' | 'creative' | 'other';
     }) => {
         try {
-            if (!selectedOption) {
-                alert('Por favor, selecciona un tipo de diagrama');
-                return;
-            }
             const resultPath = await invoke<string>('create_project', {
                 name: projectName,
                 path: filePath,
-                diagram_type: selectedOption,
+                diagramType: selectedOption,
             });
-            setProjectData({ projectName, filePath, selectedOption, isNew: true });
+            // Al crear un proyecto nuevo, asignamos el modo usando selectedOption
+            setProjectData({ projectName, filePath, selectedOption, isNew: true, diagram_type: selectedOption });
             setCreationResult(resultPath);
             setView('editor');
         } catch (error) {
@@ -107,11 +122,12 @@ function App() {
             {view === 'form' && (
                 <ProjectForm onBack={handleBack} onCreate={handleCreateProject} />
             )}
-            {view === 'editor' && (
+            {view === 'editor' && projectData && (
                 <DiagramEditor
                     projectPath={creationResult}
                     isNew={!!projectData?.isNew}
                     onBackToProject={() => setView('home')}
+                    mode={projectData.selectedOption as 'programming' | 'creative' || 'programming'}
                 />
             )}
         </div>

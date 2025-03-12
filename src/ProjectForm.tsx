@@ -6,14 +6,14 @@ interface ProjectFormProps {
     onCreate: (data: {
         projectName: string;
         filePath: string;
-        selectedOption: string;
+        selectedOption: 'programming' | 'creative' | 'other';
     }) => void;
 }
 
 function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
     const [projectName, setProjectName] = useState('');
     const [filePath, setFilePath] = useState('');
-    const [diagramType, setDiagramType] = useState('programming');
+    const [diagramType, setDiagramType] = useState<'programming' | 'creative' | 'other'>('programming');
 
     // Abre el diálogo para seleccionar la ubicación
     const handleSelectLocation = async () => {
@@ -68,7 +68,7 @@ function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
                     <label>Tipo de Diagrama:</label><br />
                     <select
                         value={diagramType}
-                        onChange={(e) => setDiagramType(e.target.value)}
+                        onChange={(e) => setDiagramType(e.target.value as 'programming' | 'creative' | 'other')}
                         required
                     >
                         <option value="programming">Diagrama de Flujo (Programación)</option>

@@ -1,3 +1,4 @@
+// src/BlockPalette.tsx
 import React from 'react';
 
 interface Block {
@@ -5,28 +6,34 @@ interface Block {
     label: string;
 }
 
-const availableBlocks: Block[] = [
+interface BlockPaletteProps {
+    onAddBlock: (block: Block) => void;
+    mode: "programming" | "creative";
+}
+
+const programmingBlocks: Block[] = [
     { type: 'process', label: 'Proceso' },
     { type: 'conditional', label: 'Condicional' },
     { type: 'cycle', label: 'Ciclo' },
     { type: 'io', label: 'Entrada/Salida' },
-    { type: 'function', label: 'Función' },
+    { type: 'functionDef', label: 'Función (Definición)' },
+    { type: 'functionCall', label: 'Función (Llamada)' },
     { type: 'variable', label: 'Variable' },
 ];
 
-interface BlockPaletteProps {
-    onAddBlock: (block: Block) => void;
-}
+const creativeBlocks: Block[] = [
+    { type: 'idea', label: 'Idea' },
+    { type: 'note', label: 'Nota' },
+    { type: 'multimedia', label: 'Multimedia' },
+    { type: 'decision', label: 'Decisión' },
+];
 
-const BlockPalette: React.FC<BlockPaletteProps> = ({ onAddBlock }) => {
+const BlockPalette: React.FC<BlockPaletteProps> = ({ onAddBlock, mode }) => {
+    const blocks = mode === 'creative' ? creativeBlocks : programmingBlocks;
     return (
         <div style={{ padding: '0.5rem', borderBottom: '1px solid #ccc', display: 'flex', gap: '0.5rem' }}>
-            {availableBlocks.map((block) => (
-                <button
-                    key={block.type}
-                    onClick={() => onAddBlock(block)}
-                    style={{ cursor: 'pointer' }}
-                >
+            {blocks.map((block) => (
+                <button key={block.type} onClick={() => onAddBlock(block)} style={{ cursor: 'pointer' }}>
                     {block.label}
                 </button>
             ))}
