@@ -1,8 +1,6 @@
-// src/CustomNodes.tsx
 import React, { useState, useEffect } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 
-/* ---------------------- Edición Inline ---------------------- */
 export const EditableLabel = ({
                                   label,
                                   onChangeLabel,
@@ -45,9 +43,6 @@ export const EditableLabel = ({
     );
 };
 
-/* ---------------------- Nodos de Programación ---------------------- */
-
-// Nodo para procesos (rectangular)
 export const ProcessNode = (props: NodeProps<any>) => {
     const { data } = props;
     return (
@@ -72,7 +67,6 @@ export const ProcessNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo para condicionales (diamante)
 export const ConditionalNode = (props: NodeProps<any>) => {
     const { data } = props;
     return (
@@ -117,7 +111,6 @@ export const ConditionalNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo para ciclo: inicio del ciclo
 export const CycleStartNode = (props: NodeProps<any>) => {
     const { data } = props;
     return (
@@ -146,7 +139,6 @@ export const CycleStartNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo para ciclo: fin del ciclo
 export const CycleEndNode = (props: NodeProps<any>) => {
     const { data } = props;
     return (
@@ -175,7 +167,6 @@ export const CycleEndNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo para entrada/salida (paralelogramo)
 export const IONode = (props: NodeProps<any>) => {
     const { data } = props;
     return (
@@ -205,9 +196,6 @@ export const IONode = (props: NodeProps<any>) => {
     );
 };
 
-/* ---------------------- Nodos de Funciones (Programación) ---------------------- */
-
-// Nodo para definir una función (definición)
 export const FunctionDefinitionNode = (props: NodeProps<any>) => {
     const { data } = props;
     return (
@@ -237,7 +225,6 @@ export const FunctionDefinitionNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo para llamar a una función (invocación)
 export const FunctionCallNode = (props: NodeProps<any>) => {
     const { data } = props;
     return (
@@ -268,7 +255,6 @@ export const FunctionCallNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo para variables
 export const VariableNode = (props: NodeProps<any>) => {
     const { data } = props;
     const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -321,9 +307,6 @@ export const VariableNode = (props: NodeProps<any>) => {
     );
 };
 
-/* ---------------------- Nodos Creativos ---------------------- */
-
-// Nodo de Idea (lluvia de ideas)
 export const IdeaNode = (props: NodeProps<any>) => {
     const { data } = props;
     const [bgColor, setBgColor] = useState(data.bgColor || '#ffffff');
@@ -361,7 +344,6 @@ export const IdeaNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo de Nota
 export const NoteNode = (props: NodeProps<any>) => {
     const { data } = props;
     const [bgColor, setBgColor] = useState(data.bgColor || '#f9e79f');
@@ -399,7 +381,6 @@ export const NoteNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo Multimedia (imagen, video, etc.)
 export const MultimediaNode = (props: NodeProps<any>) => {
     const { data } = props;
     const [bgColor, setBgColor] = useState(data.bgColor || '#d1f2eb');
@@ -438,7 +419,6 @@ export const MultimediaNode = (props: NodeProps<any>) => {
     );
 };
 
-// Nodo de Decisión (con desplegable)
 export const DecisionNode = (props: NodeProps<any>) => {
     const { data } = props;
     const [bgColor, setBgColor] = useState(data.bgColor || '#fadbd8');
@@ -447,7 +427,6 @@ export const DecisionNode = (props: NodeProps<any>) => {
         data.onChangeBgColor && data.onChangeBgColor(bgColor);
     }, [bgColor]);
 
-    // Opciones para el desplegable (pueden venir desde data.options)
     const options = data.options || ['Opción 1', 'Opción 2'];
 
     return (

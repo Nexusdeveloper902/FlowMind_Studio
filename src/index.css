@@ -1,0 +1,66 @@
+/* index.css */
+
+/* 1. Importar Bootstrap si lo usas */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* 2. Variables para modo oscuro */
+:root {
+    --dark-bg: #2e2e2e;   /* Fondo oscuro general */
+    --dark-text: #f1f1f1; /* Texto claro general */
+    --mid-bg: #3a3f44;    /* Para navbar o contenedores */
+    --button-bg: #5c5c5c; /* Para botones */
+    --button-bg-hover: #707070;
+}
+
+/* 3. Estilo global del body */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* 4. Navbar personalizado (ejemplo) */
+.navbar-custom {
+    background-color: var(--mid-bg);
+}
+
+/* Enlaces del navbar */
+.navbar-custom .nav-link {
+    color: var(--dark-text);
+    transition: color 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #ffffff;
+}
+
+/* 5. Botones personalizados */
+.btn-custom {
+    background-color: var(--button-bg);
+    border-color: var(--button-bg);
+    color: var(--dark-text);
+    transition: background-color 0.3s, border-color 0.3s;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+
+    /* Para íconos + texto en línea */
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-custom:hover {
+    background-color: var(--button-bg-hover);
+    border-color: var(--button-bg-hover);
+    color: var(--dark-text);
+}
+
+/* 6. Forzar texto negro en los nodos de React Flow.
+   Esto anula el color blanco general y hace que los nodos
+   (que tienen fondo claro) tengan texto negro. */
+.react-flow__node,
+.react-flow__node * {
+    color: #000 !important;
+}

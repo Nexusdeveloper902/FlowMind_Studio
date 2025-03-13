@@ -1,4 +1,3 @@
-// src/BlockPalette.tsx
 import React from 'react';
 
 interface Block {
@@ -31,9 +30,13 @@ const creativeBlocks: Block[] = [
 const BlockPalette: React.FC<BlockPaletteProps> = ({ onAddBlock, mode }) => {
     const blocks = mode === 'creative' ? creativeBlocks : programmingBlocks;
     return (
-        <div style={{ padding: '0.5rem', borderBottom: '1px solid #ccc', display: 'flex', gap: '0.5rem' }}>
+        <div className="d-flex p-2 border-bottom">
             {blocks.map((block) => (
-                <button key={block.type} onClick={() => onAddBlock(block)} style={{ cursor: 'pointer' }}>
+                <button
+                    key={block.type}
+                    onClick={() => onAddBlock(block)}
+                    className="btn btn-custom me-2"
+                >
                     {block.label}
                 </button>
             ))}
