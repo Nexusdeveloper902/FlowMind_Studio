@@ -1,5 +1,4 @@
 // DiagramEditor.tsx
-
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import ReactFlow, {
     addEdge,
@@ -14,9 +13,9 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { invoke } from '@tauri-apps/api/tauri';
-import { FaArrowLeft } from 'react-icons/fa'; // Para ícono en el botón de "Volver"
+import { FaArrowLeft } from 'react-icons/fa';
 
-import BlockPalette from './BlockPalette'; // Ajusta la ruta según tu estructura
+import BlockPalette from './BlockPalette';
 import CustomEdge from './CustomEdge';
 import {
     ProcessNode,
@@ -32,9 +31,8 @@ import {
     MultimediaNode,
     DecisionNode,
 } from './CustomNodes';
-import { MyNode, MyEdge, NodeData } from './types'; // Ajusta según tu tipado
+import { MyNode, MyEdge, NodeData } from './types';
 
-// Mapeo de tipos de nodo para React Flow
 const nodeTypes = {
     process: ProcessNode,
     conditional: ConditionalNode,
@@ -50,7 +48,6 @@ const nodeTypes = {
     decision: DecisionNode,
 };
 
-// Mapeo de tipos de arista
 const edgeTypes = {
     custom: CustomEdge,
 };
@@ -62,10 +59,6 @@ interface DiagramEditorProps {
     mode: 'programming' | 'creative';
 }
 
-/**
- * Rehidrata los nodos cargados desde JSON, reasignando las funciones de edición
- * (onChangeLabel, onChangeValue, etc.) que se pierden al serializar.
- */
 function rehydrateNodes(
     loadedNodes: MyNode[],
     updateNode: (id: string, newData: Partial<NodeData>) => void
@@ -143,14 +136,12 @@ function DiagramEditor({
     const [edges, setEdges] = useState<MyEdge[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Actualiza los datos de un nodo
     const updateNode = (id: string, newData: Partial<NodeData>) => {
         setNodes((prevNodes) =>
             prevNodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, ...newData } } : n))
         );
     };
 
-    // Crea un nodo "Inicio" por defecto
     useEffect(() => {
         setNodes([
             {
@@ -166,23 +157,19 @@ function DiagramEditor({
         setEdges([]);
     }, []);
 
-    // Manejo de cambios en nodos
     const onNodesChange = useCallback(
         (changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
         []
     );
-    // Manejo de cambios en edges
     const onEdgesChange = useCallback(
         (changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)),
         []
     );
 
-    // Conexión de nodos
     const onConnect = useCallback(
         (connection: Connection) => {
             const sourceNode = nodes.find((n) => n.id === connection.source);
             if (sourceNode && sourceNode.type === 'cycle_start') {
-                // Si es un ciclo_start, forzamos solo 1 conexión con cycle_end
                 const existingEdge = edges.find((edge) => {
                     if (edge.source === sourceNode.id) {
                         const targetNode = nodes.find((nd) => nd.id === edge.target);
@@ -200,7 +187,6 @@ function DiagramEditor({
                 data: { branch: '' },
             };
 
-            // Handles "true"/"false" en condicional
             if (connection.sourceHandle === 'true') {
                 newEdge.data = { branch: 'Condición se cumple' };
             } else if (connection.sourceHandle === 'false') {
@@ -212,7 +198,6 @@ function DiagramEditor({
         [nodes, edges]
     );
 
-    // Capturar tecla Delete
     useEffect(() => {
         if (containerRef.current) {
             containerRef.current.focus();
@@ -231,13 +216,11 @@ function DiagramEditor({
         }
     };
 
-    // Agregar un nuevo nodo (bloque)
     const addBlock = (block: { type: string; label: string }) => {
         const randomPos = { x: 200 + Math.random() * 200, y: 200 + Math.random() * 200 };
         const nodeId = `${Date.now()}${block.type}`;
         let newNode: MyNode | null = null;
 
-        // Caso especial: "cycle" crea dos nodos (inicio/fin)
         if (block.type === 'cycle') {
             const nodeIdStart = `${Date.now()}_start`;
             const nodeIdEnd = `${Date.now()}_end`;
@@ -274,7 +257,6 @@ function DiagramEditor({
             return;
         }
 
-        // Resto de tipos de nodo
         switch (block.type) {
             case 'variable':
                 newNode = {
@@ -291,7 +273,6 @@ function DiagramEditor({
                     position: randomPos,
                 };
                 break;
-
             case 'functionDef':
                 newNode = {
                     id: nodeId,
@@ -305,7 +286,6 @@ function DiagramEditor({
                     position: randomPos,
                 };
                 break;
-
             case 'functionCall':
                 newNode = {
                     id: nodeId,
@@ -318,7 +298,6 @@ function DiagramEditor({
                     position: randomPos,
                 };
                 break;
-
             case 'idea':
                 newNode = {
                     id: nodeId,
@@ -332,7 +311,6 @@ function DiagramEditor({
                     position: randomPos,
                 };
                 break;
-
             case 'note':
                 newNode = {
                     id: nodeId,
@@ -346,7 +324,6 @@ function DiagramEditor({
                     position: randomPos,
                 };
                 break;
-
             case 'multimedia':
                 newNode = {
                     id: nodeId,
@@ -360,7 +337,6 @@ function DiagramEditor({
                     position: randomPos,
                 };
                 break;
-
             case 'decision':
                 newNode = {
                     id: nodeId,
@@ -375,9 +351,7 @@ function DiagramEditor({
                     position: randomPos,
                 };
                 break;
-
             default:
-                // process, conditional, cycle_start, cycle_end, io
                 newNode = {
                     id: nodeId,
                     type: block.type,
@@ -395,7 +369,6 @@ function DiagramEditor({
         }
     };
 
-    // Cargar diagrama
     const handleLoad = async () => {
         if (!projectPath) return;
         try {
@@ -406,7 +379,6 @@ function DiagramEditor({
                 edges: MyEdge[];
             };
             if (loadedData.nodes && loadedData.edges) {
-                // Rehidrata nodos para recuperar callbacks
                 const rehydrated = rehydrateNodes(loadedData.nodes, updateNode);
                 setNodes(rehydrated);
                 setEdges(loadedData.edges);
@@ -417,7 +389,6 @@ function DiagramEditor({
         }
     };
 
-    // Guardar diagrama
     const handleSave = async () => {
         if (!projectPath) return;
         const diagramState = { mode, nodes, edges };
@@ -431,17 +402,13 @@ function DiagramEditor({
         }
     };
 
-    // Si no es un diagrama nuevo, lo cargamos
     useEffect(() => {
         if (projectPath && !isNew) {
             handleLoad();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [projectPath, isNew]);
 
-    // Simulación de diagrama
     const simulateDiagram = () => {
-        // Aquí iría la lógica de simulación...
         alert('Simulación finalizada.');
     };
 
@@ -451,7 +418,6 @@ function DiagramEditor({
             tabIndex={0}
             onKeyDown={handleKeyDown}
             style={{
-                // Deja espacio debajo del navbar fijo (90px) y ocupa el resto
                 marginTop: '25px',
                 height: 'calc(100vh - 90px)',
                 display: 'flex',
@@ -459,10 +425,8 @@ function DiagramEditor({
                 outline: 'none',
             }}
         >
-            {/* Paleta de bloques */}
             <BlockPalette onAddBlock={addBlock} mode={mode} />
 
-            {/* Botones superiores */}
             <div style={{ padding: '1rem' }}>
                 <button onClick={onBackToProject} className="btn btn-custom">
                     <FaArrowLeft />
@@ -476,7 +440,6 @@ function DiagramEditor({
                 </button>
             </div>
 
-            {/* Área de React Flow */}
             <div style={{ flexGrow: 1, border: '1px solid #ccc', margin: '0 1rem' }}>
                 <ReactFlow
                     nodes={nodes}
@@ -494,7 +457,6 @@ function DiagramEditor({
                 </ReactFlow>
             </div>
 
-            {/* Botón de simulación */}
             <div style={{ padding: '1rem' }}>
                 <button onClick={simulateDiagram} className="btn btn-custom">
                     Ejecutar Diagrama

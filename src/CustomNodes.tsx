@@ -1,3 +1,4 @@
+// CustomNodes.tsx
 import React, { useState, useEffect } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 

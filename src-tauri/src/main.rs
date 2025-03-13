@@ -1,3 +1,4 @@
+// main.rs
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::fs::{create_dir_all, File, read_to_string, write};
@@ -14,11 +15,9 @@ struct ProjectData {
 
 #[tauri::command]
 fn create_project(name: &str, path: &str, diagramType: &str) -> Result<String, String> {
-    // Crear la carpeta si no existe
     if let Err(e) = create_dir_all(path) {
         return Err(format!("Error al crear carpeta: {}", e));
     }
-    // Solo se guardan metadatos en la creación
     let project_data = ProjectData {
         name: name.to_string(),
         path: path.to_string(),

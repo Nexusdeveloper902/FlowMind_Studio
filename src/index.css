@@ -1,18 +1,20 @@
 /* index.css */
-
-/* 1. Importar Bootstrap si lo usas */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* 2. Variables para modo oscuro */
 :root {
-    --dark-bg: #2e2e2e;   /* Fondo oscuro general */
-    --dark-text: #f1f1f1; /* Texto claro general */
-    --mid-bg: #3a3f44;    /* Para navbar o contenedores */
-    --button-bg: #5c5c5c; /* Para botones */
+    --dark-bg: #2e2e2e;
+    --dark-text: #f1f1f1;
+    --mid-bg: #3a3f44;
+    --button-bg: #5c5c5c;
     --button-bg-hover: #707070;
+
+    /* Variables para la Home */
+    --primary-color: #3a3f44;
+    --secondary-color: #2e2e2e;
+    --light-text: #f1f1f1;
+    --button-text: #f1f1f1;
 }
 
-/* 3. Estilo global del body */
 body {
     margin: 0;
     padding: 0;
@@ -21,12 +23,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-/* 4. Navbar personalizado (ejemplo) */
 .navbar-custom {
     background-color: var(--mid-bg);
 }
 
-/* Enlaces del navbar */
 .navbar-custom .nav-link {
     color: var(--dark-text);
     transition: color 0.3s ease;
@@ -36,7 +36,6 @@ body {
     color: #ffffff;
 }
 
-/* 5. Botones personalizados */
 .btn-custom {
     background-color: var(--button-bg);
     border-color: var(--button-bg);
@@ -44,8 +43,6 @@ body {
     transition: background-color 0.3s, border-color 0.3s;
     border-radius: 4px;
     padding: 0.5rem 1rem;
-
-    /* Para íconos + texto en línea */
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -57,10 +54,26 @@ body {
     color: var(--dark-text);
 }
 
-/* 6. Forzar texto negro en los nodos de React Flow.
-   Esto anula el color blanco general y hace que los nodos
-   (que tienen fondo claro) tengan texto negro. */
 .react-flow__node,
 .react-flow__node * {
     color: #000 !important;
+}
+
+.project-form-container {
+    /* Ejemplo de degradado similar a la Home */
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    min-height: 100vh; /* Para ocupar toda la ventana */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-text); /* Texto claro */
+}
+
+.project-form-content {
+    /* Un contenedor centrado y con fondo semitransparente opcional */
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
 }

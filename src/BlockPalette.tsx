@@ -1,3 +1,4 @@
+// BlockPalette.tsx
 import React from 'react';
 
 interface Block {
@@ -30,7 +31,7 @@ const creativeBlocks: Block[] = [
 const BlockPalette: React.FC<BlockPaletteProps> = ({ onAddBlock, mode }) => {
     const blocks = mode === 'creative' ? creativeBlocks : programmingBlocks;
     return (
-        <div className="d-flex p-2 border-bottom">
+        <div className="d-flex p-2" style={{ borderBottom: 'none' }}>
             {blocks.map((block) => (
                 <button
                     key={block.type}

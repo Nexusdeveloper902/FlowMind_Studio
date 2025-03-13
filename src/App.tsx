@@ -1,3 +1,4 @@
+// App.tsx
 import { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import { open } from '@tauri-apps/api/dialog';

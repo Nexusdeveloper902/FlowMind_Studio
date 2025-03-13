@@ -1,0 +1,41 @@
+/* Home.css */
+.home-hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: var(--light-text);
+    transition: background 0.5s ease;
+}
+
+.home-hero h1 {
+    font-weight: 700;
+}
+
+.home-hero p.lead {
+    color: var(--light-text);
+}
+
+/* Botones con texto e íconos en color blanco */
+.btn-custom {
+    background-color: var(--button-bg);
+    border: none;
+    color: #fff !important; /* Forzar el color blanco */
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 0.3rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-custom:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--button-bg-hover);
+}
+
+/* Aseguramos que todos los elementos hijos dentro del botón usen el color blanco */
+.btn-custom,
+.btn-custom * {
+    color: #fff !important;
+}

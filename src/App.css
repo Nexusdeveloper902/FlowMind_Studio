@@ -1,3 +1,4 @@
+/* App.css */
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }
@@ -5,15 +6,14 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafb);
 }
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-
   color: #0f0f0f;
   background-color: #f6f6f6;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -81,6 +81,7 @@ button {
 button:hover {
   border-color: #396cd8;
 }
+
 button:active {
   border-color: #396cd8;
   background-color: #e8e8e8;
@@ -100,11 +101,9 @@ button {
     color: #f6f6f6;
     background-color: #2f2f2f;
   }
-
   a:hover {
     color: #24c8db;
   }
-
   input,
   button {
     color: #ffffff;
