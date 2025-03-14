@@ -15,6 +15,7 @@ import 'reactflow/dist/style.css';
 import { invoke } from '@tauri-apps/api/tauri';
 import { FaArrowLeft } from 'react-icons/fa';
 
+
 import BlockPalette from './BlockPalette';
 import CustomEdge from './CustomEdge';
 import {
@@ -464,7 +465,7 @@ function DiagramEditor({
                 >
                     <MiniMap style={{ backgroundColor: '#333' }} />
                     <Controls style={{ backgroundColor: '#333' }} />
-                    <Background color="#555" gap={16} variant="dots" />
+                    <Background color="#555" gap={16} variant={"dots" as any} />
                 </ReactFlow>
             </div>
 
