@@ -59,6 +59,7 @@ interface DiagramEditorProps {
     mode: 'programming' | 'creative';
 }
 
+/** Rehydrate nodes to restore editing callbacks */
 function rehydrateNodes(
     loadedNodes: MyNode[],
     updateNode: (id: string, newData: Partial<NodeData>) => void
@@ -142,6 +143,7 @@ function DiagramEditor({
         );
     };
 
+    // Create a default "Inicio" node
     useEffect(() => {
         setNodes([
             {
@@ -304,7 +306,7 @@ function DiagramEditor({
                     type: 'idea',
                     data: {
                         text: '',
-                        bgColor: '#ffffff',
+                        bgColor: '#444',
                         onChangeText: (newText: string) => updateNode(nodeId, { text: newText }),
                         onChangeBgColor: (newColor: string) => updateNode(nodeId, { bgColor: newColor }),
                     },
@@ -317,7 +319,7 @@ function DiagramEditor({
                     type: 'note',
                     data: {
                         text: '',
-                        bgColor: '#f9e79f',
+                        bgColor: '#444',
                         onChangeText: (newText: string) => updateNode(nodeId, { text: newText }),
                         onChangeBgColor: (newColor: string) => updateNode(nodeId, { bgColor: newColor }),
                     },
@@ -330,7 +332,7 @@ function DiagramEditor({
                     type: 'multimedia',
                     data: {
                         url: '',
-                        bgColor: '#d1f2eb',
+                        bgColor: '#444',
                         onChangeUrl: (newUrl: string) => updateNode(nodeId, { url: newUrl }),
                         onChangeBgColor: (newColor: string) => updateNode(nodeId, { bgColor: newColor }),
                     },
@@ -344,7 +346,7 @@ function DiagramEditor({
                     data: {
                         selected: 'Opción 1',
                         options: ['Opción 1', 'Opción 2'],
-                        bgColor: '#fadbd8',
+                        bgColor: '#444',
                         onChangeSelected: (newSel: string) => updateNode(nodeId, { selected: newSel }),
                         onChangeBgColor: (newColor: string) => updateNode(nodeId, { bgColor: newColor }),
                     },
@@ -418,30 +420,39 @@ function DiagramEditor({
             tabIndex={0}
             onKeyDown={handleKeyDown}
             style={{
-                marginTop: '25px',
-                height: 'calc(100vh - 90px)',
+                marginTop: '56px', // Leave space for the fixed navbar
+                height: 'calc(100vh - 56px)',
                 display: 'flex',
                 flexDirection: 'column',
                 outline: 'none',
+                backgroundColor: '#2e2e2e',
+                color: '#f1f1f1',
+                padding: 0,
             }}
         >
-            <BlockPalette onAddBlock={addBlock} mode={mode} />
-
+            {/* Block Palette */}
             <div style={{ padding: '1rem' }}>
-                <button onClick={onBackToProject} className="btn btn-custom">
+                <BlockPalette onAddBlock={addBlock} mode={mode} />
+            </div>
+
+            {/* Top Buttons */}
+            <div style={{ padding: '1rem' }}>
+                <button onClick={onBackToProject} className="btn btn-custom" style={{ marginRight: '1rem' }}>
                     <FaArrowLeft />
                     <span>Volver</span>
                 </button>
-                <button onClick={handleLoad} className="btn btn-custom" style={{ marginLeft: '1rem' }}>
+                <button onClick={handleLoad} className="btn btn-custom" style={{ marginRight: '1rem' }}>
                     Recargar
                 </button>
-                <button onClick={handleSave} className="btn btn-custom" style={{ marginLeft: '1rem' }}>
+                <button onClick={handleSave} className="btn btn-custom">
                     Guardar
                 </button>
             </div>
 
-            <div style={{ flexGrow: 1, border: '1px solid #ccc', margin: '0 1rem' }}>
+            {/* ReactFlow Area */}
+            <div style={{ flexGrow: 1, padding: 0 }}>
                 <ReactFlow
+                    style={{ backgroundColor: '#2e2e2e' }}
                     nodes={nodes}
                     edges={edges}
                     onNodesChange={onNodesChange}
@@ -451,12 +462,13 @@ function DiagramEditor({
                     nodeTypes={nodeTypes}
                     edgeTypes={edgeTypes}
                 >
-                    <MiniMap />
-                    <Controls />
-                    <Background />
+                    <MiniMap style={{ backgroundColor: '#333' }} />
+                    <Controls style={{ backgroundColor: '#333' }} />
+                    <Background color="#555" gap={16} variant="dots" />
                 </ReactFlow>
             </div>
 
+            {/* Simulation Button */}
             <div style={{ padding: '1rem' }}>
                 <button onClick={simulateDiagram} className="btn btn-custom">
                     Ejecutar Diagrama

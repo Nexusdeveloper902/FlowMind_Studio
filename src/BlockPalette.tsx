@@ -1,44 +1,45 @@
 // BlockPalette.tsx
 import React from 'react';
+import { FaCog, FaCodeBranch, FaRedoAlt, FaKeyboard, FaRegLightbulb, FaStickyNote } from 'react-icons/fa';
 
 interface Block {
     type: string;
     label: string;
+    icon?: React.ComponentType; // El ícono
 }
 
 interface BlockPaletteProps {
     onAddBlock: (block: Block) => void;
-    mode: "programming" | "creative";
+    mode: 'programming' | 'creative';
 }
 
+/* Ejemplo con algunos íconos de react-icons */
 const programmingBlocks: Block[] = [
-    { type: 'process', label: 'Proceso' },
-    { type: 'conditional', label: 'Condicional' },
-    { type: 'cycle', label: 'Ciclo' },
-    { type: 'io', label: 'Entrada/Salida' },
-    { type: 'functionDef', label: 'Función (Definición)' },
-    { type: 'functionCall', label: 'Función (Llamada)' },
-    { type: 'variable', label: 'Variable' },
+    { type: 'process', label: 'Proceso', icon: FaCog },
+    { type: 'conditional', label: 'Condicional', icon: FaCodeBranch },
+    { type: 'cycle', label: 'Ciclo', icon: FaRedoAlt },
+    { type: 'io', label: 'Entrada/Salida', icon: FaKeyboard },
 ];
 
 const creativeBlocks: Block[] = [
-    { type: 'idea', label: 'Idea' },
-    { type: 'note', label: 'Nota' },
-    { type: 'multimedia', label: 'Multimedia' },
-    { type: 'decision', label: 'Decisión' },
+    { type: 'idea', label: 'Idea', icon: FaRegLightbulb },
+    { type: 'note', label: 'Nota', icon: FaStickyNote },
 ];
 
 const BlockPalette: React.FC<BlockPaletteProps> = ({ onAddBlock, mode }) => {
     const blocks = mode === 'creative' ? creativeBlocks : programmingBlocks;
+
     return (
-        <div className="d-flex p-2" style={{ borderBottom: 'none' }}>
+        <div className="d-flex flex-wrap" style={{ gap: '0.5rem' }}>
             {blocks.map((block) => (
                 <button
                     key={block.type}
                     onClick={() => onAddBlock(block)}
-                    className="btn btn-custom me-2"
+                    className="btn btn-custom"
                 >
-                    {block.label}
+                    {/* Si existe un ícono, lo renderizamos */}
+                    {block.icon && <block.icon />}
+                    <span>{block.label}</span>
                 </button>
             ))}
         </div>

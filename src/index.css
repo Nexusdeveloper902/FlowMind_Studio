@@ -1,14 +1,27 @@
 /* index.css */
+
+/* Importa Bootstrap */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+/* Reseteo global y fondo oscuro */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #2e2e2e; /* Fondo oscuro */
+}
+
+#root {
+    height: 100%;
+}
+
+/* Variables de color para modo oscuro */
 :root {
     --dark-bg: #2e2e2e;
     --dark-text: #f1f1f1;
     --mid-bg: #3a3f44;
     --button-bg: #5c5c5c;
     --button-bg-hover: #707070;
-
-    /* Variables para la Home */
     --primary-color: #3a3f44;
     --secondary-color: #2e2e2e;
     --light-text: #f1f1f1;
@@ -16,15 +29,17 @@
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
     font-family: 'Roboto', sans-serif;
+    color: var(--dark-text);
 }
 
+/* Navbar fija */
 .navbar-custom {
     background-color: var(--mid-bg);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Asegura que la barra quede sobre el contenido */
 }
 
 .navbar-custom .nav-link {
@@ -36,44 +51,24 @@ body {
     color: #ffffff;
 }
 
+/* Botones custom */
 .btn-custom {
     background-color: var(--button-bg);
-    border-color: var(--button-bg);
-    color: var(--dark-text);
-    transition: background-color 0.3s, border-color 0.3s;
-    border-radius: 4px;
+    border: none;
+    color: #fff !important;
     padding: 0.5rem 1rem;
+    border-radius: 4px;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .btn-custom:hover {
     background-color: var(--button-bg-hover);
-    border-color: var(--button-bg-hover);
-    color: var(--dark-text);
 }
 
-.react-flow__node,
-.react-flow__node * {
-    color: #000 !important;
-}
-
-.project-form-container {
-    /* Ejemplo de degradado similar a la Home */
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    min-height: 100vh; /* Para ocupar toda la ventana */
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--light-text); /* Texto claro */
-}
-
-.project-form-content {
-    /* Un contenedor centrado y con fondo semitransparente opcional */
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 2rem;
-    border-radius: 8px;
-    text-align: center;
+/* Asegurar íconos en color blanco dentro de btn-custom */
+.btn-custom svg {
+    color: #fff !important;
 }

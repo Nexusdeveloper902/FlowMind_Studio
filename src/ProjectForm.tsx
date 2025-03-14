@@ -1,8 +1,7 @@
-// ProjectForm.tsx
 import React, { useState } from 'react';
 import { open } from '@tauri-apps/api/dialog';
 import { FaArrowLeft } from 'react-icons/fa';
-import './index.css'; // Asegúrate de importar el CSS
+import './ProjectForm.css';
 
 interface ProjectFormProps {
     onBack: () => void;
@@ -40,12 +39,11 @@ function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
             <div className="project-form-content">
                 <button
                     onClick={onBack}
-                    className="btn btn-custom"
+                    className="btn btn-custom mb-3"
                     style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '0.5rem',
-                        marginBottom: '1rem'
                     }}
                 >
                     <FaArrowLeft />
@@ -53,21 +51,21 @@ function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
                 </button>
 
                 <h2 className="mb-4">Crear Nuevo Proyecto</h2>
-                <form onSubmit={handleSubmit} style={{ display: 'inline-block', textAlign: 'left' }}>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label>Nombre del Proyecto:</label><br />
+                <form onSubmit={handleSubmit} className="text-start">
+                    <div className="mb-3">
+                        <label>Nombre del Proyecto:</label>
                         <input
                             type="text"
                             value={projectName}
                             onChange={(e) => setProjectName(e.target.value)}
                             required
-                            className="form-control"
+                            className="form-control mt-1"
                         />
                     </div>
 
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label>Ubicación del Archivo:</label><br />
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <div className="mb-3">
+                        <label>Ubicación del Archivo:</label>
+                        <div className="d-flex gap-2 mt-1">
                             <input
                                 type="text"
                                 value={filePath}
@@ -81,13 +79,15 @@ function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
                         </div>
                     </div>
 
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label>Tipo de Diagrama:</label><br />
+                    <div className="mb-3">
+                        <label>Tipo de Diagrama:</label>
                         <select
                             value={diagramType}
-                            onChange={(e) => setDiagramType(e.target.value as 'programming' | 'creative' | 'other')}
+                            onChange={(e) =>
+                                setDiagramType(e.target.value as 'programming' | 'creative' | 'other')
+                            }
                             required
-                            className="form-select"
+                            className="form-select mt-1"
                         >
                             <option value="programming">Diagrama de Flujo (Programación)</option>
                             <option value="creative">Diagrama Creativo</option>
@@ -95,7 +95,7 @@ function ProjectForm({ onBack, onCreate }: ProjectFormProps) {
                         </select>
                     </div>
 
-                    <button type="submit" className="btn btn-custom mt-3">
+                    <button type="submit" className="btn btn-custom mt-3 w-100">
                         Crear Proyecto
                     </button>
                 </form>

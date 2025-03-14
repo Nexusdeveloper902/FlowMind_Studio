@@ -4,7 +4,7 @@ import './index.css';
 
 const Navbar = () => {
     return (
-        <nav className="navbar navbar-custom fixed-top py-3">
+        <nav className="navbar navbar-custom py-3">
             <div className="container-fluid d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center gap-2">
                     <FaLightbulb size="1.5em" />
